@@ -1,0 +1,22 @@
+<div id="login-container">
+  <div class="col-12 col-md-6 col-lg-5 col-xl-4 mx-auto">
+    <div class="card">
+      <div class="card-header text-center">
+        <img class="mt-2" src="assets/images/logo.png" alt="logo" />
+        <h4 class="card-title mt-2">Electro Chess - Log in</h4>
+      </div>
+      <div class="card-body">
+        <form (submit)='login($event)'>
+          <div class="form-group">
+            <label for="txtUsername">Choose a username</label>
+            <input type="text" class="form-control" id="txtUsername" placeholder="Username">
+          </div>
+          <button type="submit" class="btn btn-outline-info float-right">
+            <i class="fas fa-sign-in-alt"></i>
+            Log in
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
