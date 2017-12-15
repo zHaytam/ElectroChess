@@ -6,11 +6,23 @@ const wss = new WebSocket.Server({
   console.log("Listening on port 1997.");
 });
 
-wss.on('connection', function (ws) {
+sendJsonToWs = function (ws, data) {
+  ws.send(JSON.stringify(data));
+}
+
+wss.on('connection', function (ws, req) {
+
+  console.log("New client.");
 
   ws.on('message', function (message) {
     console.log(message);
   });
 
-  ws.send('test');
+  ws.on('close', function () {
+    console.log("connecion closed.");
+  });
+
+  sendJsonToWs(ws, {
+    connected: true,
+  });
 });

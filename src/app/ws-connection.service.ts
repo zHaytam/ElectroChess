@@ -4,12 +4,10 @@ import { Injectable } from '@angular/core';
 export class WsConnectionService {
 
   ws: WebSocket;
+  public connected: boolean;
 
   constructor() {
     this.ws = new WebSocket('ws://localhost:1997');
-    // this.ws.on('open', this.onOpen);
-    // this.ws.on('message', this.onMessage);
-    // this.ws.on('close', this.onClose);
     this.ws.onopen = this.onOpen;
     this.ws.onmessage = this.onMessage;
     this.ws.onclose = this.onClose;
@@ -21,15 +19,24 @@ export class WsConnectionService {
   }
 
   onOpen() {
-    console.log('Connection opened.');
+    this.connected = true;
   }
 
-  onMessage(data) {
-    console.log(data);
+  onMessage(e) {
+    const json = JSON.parse(e.data);
+    console.log(json);
   }
 
   onClose() {
-    console.log('Connection closed.');
+    this.connected = false;
+  }
+
+  public send(data: any): boolean {
+    if (!this.connected)
+      return false;
+
+    this.ws.send(JSON.stringify(data));
+    return true;
   }
 
 }
