@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WsConnectionService } from '../ws-connection.service';
+import { SocketService } from '../services/socket.service';
 
 @Component({
     selector: 'app-login',
@@ -9,10 +9,7 @@ import { WsConnectionService } from '../ws-connection.service';
 
 export class LoginComponent {
 
-    constructor(private webSocketConnection: WsConnectionService) {
-        this.webSocketConnection.addEventListener('', (d) => {
-
-        });
+    constructor(private webSocketConnection: SocketService) {
     }
 
     login(e) {

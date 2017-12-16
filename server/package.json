@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/zHaytam/ElectroChess#readme",
   "dependencies": {
+    "@types/socket.io": "^1.4.31",
     "socket.io": "^2.0.4"
   }
 }
