@@ -1,0 +1,23 @@
+{
+  "name": "electro-chess-server",
+  "version": "0.0.0",
+  "description": "",
+  "main": "main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "tsc -p . && node dist/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zHaytam/ElectroChess.git"
+  },
+  "author": "zHaytam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zHaytam/ElectroChess/issues"
+  },
+  "homepage": "https://github.com/zHaytam/ElectroChess#readme",
+  "dependencies": {
+    "socket.io": "^2.0.4"
+  }
+}
