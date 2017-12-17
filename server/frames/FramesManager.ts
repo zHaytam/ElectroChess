@@ -9,6 +9,7 @@ export default class FramesManager {
     public static initialize() {
         FramesManager.frames = [];
         FramesManager.frames.push(new LoginFrame());
+        console.log(`${FramesManager.frames.length} frame(s) initialized.`);
     }
 
     public static handlePlayer(player: Player) {

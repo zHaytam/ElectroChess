@@ -1,5 +1,6 @@
 import * as socketIo from 'socket.io';
 import Player from './player';
+import FramesManager from './frames/FramesManager';
 
 const PORT = 1997;
 
@@ -11,6 +12,7 @@ export default class Server {
     public static players: Player[];
 
     public static initialize() {
+        FramesManager.initialize();
         Server.listening = false;
         Server.players = [];
         Server.socket = socketIo();
@@ -19,6 +21,7 @@ export default class Server {
 
     private static onConnection(socket) {
         let newPlayer = new Player(Server.idsCounter, socket);
+        FramesManager.handlePlayer(newPlayer);
         Server.players.push(newPlayer);
         console.log(`Player #${newPlayer.id} connected (${Server.players.length} players in total).`);
         Server.idsCounter++;
