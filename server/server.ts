@@ -1,43 +1,56 @@
 import * as socketIo from 'socket.io';
 import Player from './player';
 
+const PORT = 1997;
+
 export default class Server {
 
     private static idsCounter = 0;
-    private socket: SocketIO.Server;
-    public listening: boolean;
-    public players: Player[];
+    private static socket: SocketIO.Server;
+    public static listening: boolean;
+    public static players: Player[];
 
-    constructor() {
-        this.listening = false;
-        this.players = [];
-        this.socket = socketIo();
-        this.socket.on('connection', this.onConnection.bind(this));
+    public static initialize() {
+        Server.listening = false;
+        Server.players = [];
+        Server.socket = socketIo();
+        Server.socket.on('connection', Server.onConnection.bind(this));
     }
 
-    private onConnection(socket) {
-        let newPlayer = new Player(Server.idsCounter);
-        this.players.push(newPlayer);
-        console.log(`New player (${newPlayer.id}) connected.`);
+    private static onConnection(socket) {
+        let newPlayer = new Player(Server.idsCounter, socket);
+        Server.players.push(newPlayer);
+        console.log(`Player #${newPlayer.id} connected (${Server.players.length} players in total).`);
         Server.idsCounter++;
+
+        // Handle the player's disconnection
+        newPlayer.socket.on('disconnect', function () {
+            const newPlayerIndex = Server.players.indexOf(newPlayer);
+            if (newPlayerIndex >= 0) {
+                Server.players.splice(newPlayerIndex, 1);
+                console.log(`Player #${newPlayer.id} disconnected (${Server.players.length} players left).`);
+            }
+        });
     }
 
-    public start(port: number) {
-        if (this.listening) {
+    public static start() {
+        if (Server.listening) {
             return;
         }
 
-        this.socket.listen(port);
-        this.listening = true;
+        Server.socket.listen(PORT);
+        Server.listening = true;
+        console.log(`Started! listening on port ${PORT}..`);
     }
 
-    public stop() {
-        if (!this.listening) {
+    public static stop() {
+        if (!Server.listening) {
             return;
         }
 
-        this.socket.close();
-        this.listening = false;
+        Server.socket.close();
+        Server.listening = false;
+        console.log('Stopped.');
     }
 
 }
