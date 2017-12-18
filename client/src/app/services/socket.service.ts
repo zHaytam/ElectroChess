@@ -16,12 +16,6 @@ export class SocketService {
         this.socket.on('disconnect', this.onClose.bind(this));
     }
 
-    public login(username: String): boolean {
-        return this.send('LoginRequestMessage', {
-            username: username
-        });
-    }
-
     private onOpen() {
         console.log('Connected.');
         this.connected = true;

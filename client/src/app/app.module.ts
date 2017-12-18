@@ -5,16 +5,19 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SocketService } from './services/socket.service';
+import { PlayersListComponent } from './players-list/players-list.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
+    { path: 'players-list', component: PlayersListComponent }
 ];
 
 @NgModule({
     declarations: [
         AppComponent,
-        LoginComponent
+        LoginComponent,
+        PlayersListComponent
     ],
     imports: [
         BrowserModule,

@@ -1,3 +1,11 @@
 body {
     background-color: #343a40;
 }
+
+.fixed-alert {
+    right: 0;
+    width: 300px;
+    position: absolute;
+    top: 0;
+    margin: 10px;
+}
