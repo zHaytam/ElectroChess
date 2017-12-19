@@ -30,7 +30,7 @@ export default class Server {
         newPlayer.socket.on('disconnect', function () {
             const newPlayerIndex = Server.players.indexOf(newPlayer);
             if (newPlayerIndex >= 0) {
-                Server.players.splice(newPlayerIndex, 1);
+                //Server.players.splice(newPlayerIndex, 1);
                 console.log(`Player #${newPlayer.id} disconnected (${Server.players.length} players left).`);
             }
         });

@@ -17,9 +17,13 @@ export default class PlayersFrame implements Frame {
         let playersList = [];
 
         for (let i = 0; i < Server.players.length; i++) {
+            const sPlayer = Server.players[i];
+            if (!sPlayer.loggedIn || sPlayer === player)
+                continue;
+
             playersList.push({
-                id: Server.players[i].id,
-                name: Server.players[i].username
+                id: sPlayer.id,
+                name: sPlayer.username
             });
         }
 

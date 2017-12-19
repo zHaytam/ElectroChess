@@ -1,4 +1,19 @@
-<h1>Players List</h1>
-<ul *ngFor="let player of playersList">
-  <li>{{ player.id }} - {{ player.name }}</li>
-</ul>
+<div id="players-list-container">
+  <div class="card">
+    <div class="card-header text-center">
+      <h4 class="card-title mt-2">Players list</h4>
+    </div>
+    <div class="card-body">
+      <ul id="players-list" class="list-group list-group-flush">
+        <li *ngFor="let player of playersList" class="list-group-item player-entry">
+          <form>
+            <span class="align-middle">{{ player.name }}</span>
+            <button type="submit" class="btn btn-outline-info float-right">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
