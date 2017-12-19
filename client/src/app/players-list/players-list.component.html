@@ -6,7 +6,7 @@
     <div class="card-body">
       <ul id="players-list" class="list-group list-group-flush">
         <li *ngFor="let player of playersList" class="list-group-item player-entry">
-          <form>
+          <form (submit)="invitePlayer($event, player)">
             <span class="align-middle">{{ player.name }}</span>
             <button type="submit" class="btn btn-outline-info float-right">
               <i class="fas fa-paper-plane"></i>

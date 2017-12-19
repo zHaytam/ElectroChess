@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
 
 export class LoginComponent {
 
-    private loggingIn: boolean;
-    private errorMsg: string;
+    public loggingIn: boolean;
+    public errorMsg: string;
 
     constructor(private socketConnection: SocketService, private router: Router) {
         this.loggingIn = false;
@@ -23,9 +23,7 @@ export class LoginComponent {
         e.preventDefault();
         const username = e.target.elements[0].value;
         if (username.length > 0) {
-            if (this.socketConnection.send('LoginRequestMessage', {
-                username: username
-            })) {
+            if (this.socketConnection.send('LoginRequestMessage', { username: username })) {
                 this.loggingIn = true;
             }
         }
@@ -34,12 +32,14 @@ export class LoginComponent {
     private onLoginRequestDeniedMessage(data) {
         switch (data.reason) {
             case 0:
-                this.errorMsg = "Invalid informations.";
+                this.errorMsg = 'Invalid informations.';
                 break;
             case 1:
-                this.errorMsg = "This username is already taken.";
+                this.errorMsg = 'This username is already taken.';
                 break;
         }
+
+        this.loggingIn = false;
     }
 
     private onLoginRequestAcceptedMessage() {

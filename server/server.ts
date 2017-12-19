@@ -19,21 +19,22 @@ export default class Server {
         Server.socket.on('connection', Server.onConnection.bind(this));
     }
 
-    private static onConnection(socket) {
+    private static onConnection(socket: SocketIO.Socket) {
         let newPlayer = new Player(Server.idsCounter, socket);
         FramesManager.handlePlayer(newPlayer);
         Server.players.push(newPlayer);
-        console.log(`Player #${newPlayer.id} connected (${Server.players.length} players in total).`);
-        Server.idsCounter++;
 
         // Handle the player's disconnection
         newPlayer.socket.on('disconnect', function () {
             const newPlayerIndex = Server.players.indexOf(newPlayer);
             if (newPlayerIndex >= 0) {
-                //Server.players.splice(newPlayerIndex, 1);
+                Server.players.splice(newPlayerIndex, 1);
                 console.log(`Player #${newPlayer.id} disconnected (${Server.players.length} players left).`);
             }
         });
+
+        console.log(`Player #${newPlayer.id} connected (${Server.players.length} players in total).`);
+        Server.idsCounter++;
     }
 
     public static start() {
@@ -54,6 +55,16 @@ export default class Server {
         Server.socket.close();
         Server.listening = false;
         console.log('Stopped.');
+    }
+
+    public static broadcast(type: string, data: any = {}, except: Player = null) {
+        for (let i = 0; i < Server.players.length; i++) {
+            const sPlayer = Server.players[i];
+            if (!sPlayer.loggedIn || sPlayer == except)
+                continue;
+
+            sPlayer.socket.emit(type, data);
+        }
     }
 
 }

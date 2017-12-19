@@ -6,7 +6,6 @@ export default class LoginFrame implements Frame {
 
     public handlePlayer(player: Player) {
         player.socket.on('LoginRequestMessage', (data) => this.onLoginRequestMessage(player, data));
-        console.log(`[LoginFrame] Started handling player #${player.id}.`)
     }
 
     private onLoginRequestMessage(player: Player, msg: any) {
@@ -24,10 +23,14 @@ export default class LoginFrame implements Frame {
 
         player.username = msg.username;
         player.socket.emit('LoginRequestAcceptedMessage');
+        Server.broadcast('PlayerJoinedMessage', {
+            id: player.id,
+            name: player.username
+        }, player);
     }
 
     private static denieLoginRequest(player: Player, reason: number) {
-        console.log(`Login request denied for player #${player.id}.`);
+        console.log(`Login request denied for player #${player.id} (reason: ${reason}).`);
         player.socket.emit('LoginRequestDeniedMessage', {
             reason: reason
         });

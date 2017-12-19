@@ -18,6 +18,8 @@ export default class FramesManager {
         for (let i = 0; i < FramesManager.frames.length; i++) {
             FramesManager.frames[i].handlePlayer(player);
         }
+
+        console.log(`[FramesManager] Started handling player #${player.id}.`)
     }
 
 }

@@ -5,14 +5,13 @@ import Server from '../server';
 export default class PlayersFrame implements Frame {
 
     public handlePlayer(player: Player) {
-        player.socket.on('PlayersListRequestMessage', (data) => this.onPlayersListRequestMessage(player, data));
+        player.socket.on('PlayersListRequestMessage', (data) => PlayersFrame.onPlayersListRequestMessage(player, data));
+        player.socket.on('disconnect', () => PlayersFrame.onDisconnect(player));
     }
 
-    private onPlayersListRequestMessage(player: Player, data: any) {
-        console.log(player.loggedIn);
-        if (!player.loggedIn) {
+    private static onPlayersListRequestMessage(player: Player, data: any) {
+        if (!player.loggedIn)
             return;
-        }
 
         let playersList = [];
 
@@ -28,6 +27,12 @@ export default class PlayersFrame implements Frame {
         }
 
         player.socket.emit('PlayersListMessage', playersList);
+    }
+
+    private static onDisconnect(player: Player) {
+        if (player.loggedIn) {
+            Server.broadcast('PlayerLeftMessage', { id: player.id }, player);
+        }
     }
 
 }
