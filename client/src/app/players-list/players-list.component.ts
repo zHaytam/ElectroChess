@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SocketService } from '../services/socket.service';
+import { GameService } from '../services/game.service';
 
 @Component({
     selector: 'app-players-list',
@@ -10,8 +11,10 @@ import { SocketService } from '../services/socket.service';
 export class PlayersListComponent {
 
     public playersList: any[];
+    public inviting: boolean;
 
-    constructor(private socketService: SocketService) {
+    constructor(private socketService: SocketService, private gameService: GameService) {
+        this.inviting = false;
         this.socketService.on('PlayersListMessage', this.onPlayersListMessage.bind(this));
         this.socketService.on('PlayerLeftMessage', this.onPlayerLeftMessage.bind(this));
         this.socketService.on('PlayerJoinedMessage', this.onPlayerJoinedMessage.bind(this));
@@ -20,7 +23,14 @@ export class PlayersListComponent {
 
     private invitePlayer(e, player) {
         e.preventDefault();
-        console.log(player);
+
+        if (this.gameService.playing || this.inviting) {
+            return;
+        }
+
+        if (this.socketService.send('InvitePlayerRequestMessage', { id: player.id })) {
+            this.inviting = true;
+        }
     }
 
     private onPlayersListMessage(data) {

@@ -15,8 +15,7 @@ export default class PlayersFrame implements Frame {
 
         let playersList = [];
 
-        for (let i = 0; i < Server.players.length; i++) {
-            const sPlayer = Server.players[i];
+        for (let sPlayer of Server.players) {
             if (!sPlayer.loggedIn || sPlayer === player)
                 continue;
 

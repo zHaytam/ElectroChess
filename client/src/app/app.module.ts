@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SocketService } from './services/socket.service';
+import { GameService } from './services/game.service';
 import { PlayersListComponent } from './players-list/players-list.component';
 
 const appRoutes: Routes = [
@@ -23,7 +24,7 @@ const appRoutes: Routes = [
         BrowserModule,
         RouterModule.forRoot(appRoutes)
     ],
-    providers: [SocketService],
+    providers: [SocketService, GameService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

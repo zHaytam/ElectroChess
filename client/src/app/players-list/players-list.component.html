@@ -1,14 +1,16 @@
 <div id="players-list-container">
   <div class="card">
     <div class="card-header text-center">
-      <h4 class="card-title mt-2">Players list</h4>
+      <h4 class="card-title mt-2">
+        <i class="fas fa-users"></i>
+        Players list</h4>
     </div>
     <div class="card-body">
       <ul id="players-list" class="list-group list-group-flush">
         <li *ngFor="let player of playersList" class="list-group-item player-entry">
           <form (submit)="invitePlayer($event, player)">
             <span class="align-middle">{{ player.name }}</span>
-            <button type="submit" class="btn btn-outline-info float-right">
+            <button type="submit" class="btn btn-outline-info float-right" [disabled]="inviting">
               <i class="fas fa-paper-plane"></i>
             </button>
           </form>

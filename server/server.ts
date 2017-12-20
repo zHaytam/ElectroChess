@@ -29,6 +29,7 @@ export default class Server {
             const newPlayerIndex = Server.players.indexOf(newPlayer);
             if (newPlayerIndex >= 0) {
                 Server.players.splice(newPlayerIndex, 1);
+                newPlayer.socket.removeAllListeners();
                 console.log(`Player #${newPlayer.id} disconnected (${Server.players.length} players left).`);
             }
         });
@@ -58,8 +59,7 @@ export default class Server {
     }
 
     public static broadcast(type: string, data: any = {}, except: Player = null) {
-        for (let i = 0; i < Server.players.length; i++) {
-            const sPlayer = Server.players[i];
+        for (let sPlayer of Server.players) {
             if (!sPlayer.loggedIn || sPlayer == except)
                 continue;
 
