@@ -1,8 +1,5 @@
-<div class="alert alert-danger fixed-alert" *ngIf="errorMsg !== undefined">
-  {{ errorMsg }}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
+<div class="alert fixed-alert" [ngClass]="'alert-' + alert.type" *ngIf="alert.visible">
+  {{ alert.content }}
 </div>
 <div id="login-container">
   <div class="card ">

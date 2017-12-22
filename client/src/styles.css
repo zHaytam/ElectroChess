@@ -1,11 +1,21 @@
 body {
-    background-color: #343a40;
+  background-color: #343a40;
 }
 
 .fixed-alert {
-    right: 0;
-    width: 300px;
-    position: absolute;
-    top: 0;
-    margin: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  margin: 10px;
+}
+
+#logged-as {
+  position: absolute;
+  top: 0;
+  margin: 6px;
+  background-color: white;
+  border-radius: 6px;
+  padding-left: 6px;
+  padding-right: 6px;
 }

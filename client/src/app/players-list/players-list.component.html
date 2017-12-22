@@ -1,3 +1,10 @@
+<div id="logged-as">
+  Logged in as
+  <b>{{ socketService.username }}</b>
+</div>
+<div class="alert fixed-alert" [ngClass]="'alert-' + alert.type" *ngIf="alert.visible">
+  {{ alert.content }}
+</div>
 <div id="players-list-container">
   <div class="card">
     <div class="card-header text-center">

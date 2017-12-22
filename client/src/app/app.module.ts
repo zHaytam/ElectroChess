@@ -7,18 +7,21 @@ import { LoginComponent } from './login/login.component';
 import { SocketService } from './services/socket.service';
 import { GameService } from './services/game.service';
 import { PlayersListComponent } from './players-list/players-list.component';
+import { GameComponent } from './game/game.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
-    { path: 'players-list', component: PlayersListComponent }
+    { path: 'players-list', component: PlayersListComponent },
+    { path: 'game', component: GameComponent }
 ];
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
-        PlayersListComponent
+        PlayersListComponent,
+        GameComponent
     ],
     imports: [
         BrowserModule,

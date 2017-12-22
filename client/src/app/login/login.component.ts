@@ -11,39 +11,55 @@ import { Router } from '@angular/router';
 export class LoginComponent {
 
     public loggingIn: boolean;
-    public errorMsg: string;
+    public alert: any;
 
-    constructor(private socketConnection: SocketService, private router: Router) {
+    constructor(private socketService: SocketService, private router: Router) {
         this.loggingIn = false;
-        this.socketConnection.on('LoginRequestDeniedMessage', this.onLoginRequestDeniedMessage.bind(this));
-        this.socketConnection.on('LoginRequestAcceptedMessage', this.onLoginRequestAcceptedMessage.bind(this));
+        this.alert = {
+            type: undefined,
+            content: undefined,
+            visible: false
+        };
+        this.socketService.on('LoginRequestDeniedMessage', this.onLoginRequestDeniedMessage.bind(this));
+        this.socketService.on('LoginRequestAcceptedMessage', this.onLoginRequestAcceptedMessage.bind(this));
     }
 
     private login(e) {
         e.preventDefault();
         const username = e.target.elements[0].value;
-        if (username.length > 0) {
-            if (this.socketConnection.send('LoginRequestMessage', { username: username })) {
-                this.loggingIn = true;
-            }
+
+        if (username.length > 0 && this.socketService.send('LoginRequestMessage', { username: username }, false)) {
+            this.loggingIn = true;
         }
     }
 
     private onLoginRequestDeniedMessage(data) {
         switch (data.reason) {
             case 0:
-                this.errorMsg = 'Invalid informations.';
+                this.alert.content = 'Invalid informations.';
                 break;
             case 1:
-                this.errorMsg = 'This username is already taken.';
+                this.alert.content = 'This username is already taken.';
                 break;
         }
 
+        this.alert.type = 'danger';
+        this.alert.visible = true;
         this.loggingIn = false;
+
+        setTimeout(() => {
+            this.alert.visible = false;
+        }, 3000);
     }
 
-    private onLoginRequestAcceptedMessage() {
-        this.router.navigateByUrl('/players-list');
+    private onLoginRequestAcceptedMessage(data) {
+        this.socketService.username = data.username;
+        this.alert.content = 'Successfully connected.';
+        this.alert.type = 'success';
+        this.alert.visible = true;
+        setTimeout(() => {
+            this.router.navigateByUrl('/players-list');
+        }, 2000);
     }
 
 }

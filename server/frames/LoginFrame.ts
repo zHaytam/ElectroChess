@@ -14,15 +14,15 @@ export default class LoginFrame implements Frame {
             return;
         }
 
-        for (let i = 0; i < Server.players.length; i++) {
-            if (Server.players[i].username == msg.username) {
+        for (let sPlayer of Server.players) {
+            if (sPlayer.username == msg.username) {
                 LoginFrame.denieLoginRequest(player, 1);
                 return;
             }
         }
 
         player.username = msg.username;
-        player.socket.emit('LoginRequestAcceptedMessage');
+        player.socket.emit('LoginRequestAcceptedMessage', { username: player.username });
         Server.broadcast('PlayerJoinedMessage', {
             id: player.id,
             name: player.username

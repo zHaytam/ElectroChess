@@ -8,6 +8,10 @@ export class SocketService {
 
     private socket: SocketIOClient.Socket;
     public connected: boolean;
+    public username: string;
+    public get loggedIn(): boolean {
+        return this.username !== undefined;
+    }
 
     constructor() {
         this.connected = false;
@@ -34,8 +38,12 @@ export class SocketService {
         this.socket.removeEventListener(type, func);
     }
 
-    public send(type: string, data: any): boolean {
+    public send(type: string, data: any, mustBeLoggedIn: boolean = true): boolean {
         if (!this.connected) {
+            return false;
+        }
+
+        if (mustBeLoggedIn && !this.loggedIn) {
             return false;
         }
 
