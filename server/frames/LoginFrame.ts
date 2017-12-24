@@ -22,7 +22,10 @@ export default class LoginFrame implements Frame {
         }
 
         player.username = msg.username;
-        player.socket.emit('LoginRequestAcceptedMessage', { username: player.username });
+        player.socket.emit('LoginRequestAcceptedMessage', {
+            id: player.id,
+            name: player.username
+        });
         Server.broadcast('PlayerJoinedMessage', {
             id: player.id,
             name: player.username

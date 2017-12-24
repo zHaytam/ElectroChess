@@ -7,6 +7,8 @@ export default class PlayersFrame implements Frame {
     public handlePlayer(player: Player) {
         player.socket.on('PlayersListRequestMessage', (data) => PlayersFrame.onPlayersListRequestMessage(player, data));
         player.socket.on('InvitePlayerRequestMessage', (data) => PlayersFrame.onInvitePlayerRequestMessage(player, data));
+        player.socket.on('DeclineInviteMessage', (data) => PlayersFrame.onDeclineInviteMessage(player, data));
+        player.socket.on('AcceptInviteMessage', (data) => PlayersFrame.onAcceptInviteMessage(player, data));
         player.socket.on('disconnect', () => PlayersFrame.onDisconnect(player));
     }
 
@@ -45,7 +47,28 @@ export default class PlayersFrame implements Frame {
             return;
         }
 
-        playerTwo.socket.emit('InviteRequestMessage', { id: player.id });
+        playerTwo.socket.emit('InviteRequestMessage', { inviterId: player.id });
+    }
+
+    private static onDeclineInviteMessage(player: Player, data: any) {
+        const inviter = Server.getPlayer(data.inviterId);
+        if (inviter != null) {
+            inviter.socket.emit('InviteDeclinedMessage', { from: inviter.username });
+        }
+    }
+
+    private static onAcceptInviteMessage(player: Player, data: any) {
+        if (player.isPlaying || !player.loggedIn) {
+            return;
+        }
+
+        const inviter = Server.getPlayer(data.inviter);
+        if (!inviter || !inviter.loggedIn || inviter.isPlaying) {
+            return;
+        }
+
+        // Start a game between the two players
+        Server.startGame(inviter, player);
     }
 
     private static onDisconnect(player: Player) {

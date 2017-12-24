@@ -9,10 +9,6 @@ let win;
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 920,
-    height: 700,
-    minWidth: 920,
-    minHeight: 700,
     icon: `file://${__dirname}/dist/assets/icons/logo.ico`
   });
 
@@ -25,7 +21,7 @@ function createWindow() {
   win.webContents.openDevTools();
 
   // Maximize the window
-  //win.maximize();
+  win.maximize();
 
   // Event when the window is closed.
   win.on('closed', function () {

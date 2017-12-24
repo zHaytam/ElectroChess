@@ -64,17 +64,8 @@ export default class Server {
     public static startGame(playerOne: Player, playerTwo: Player) {
         const game = new Game(playerOne, playerTwo);
         Server.games.push(game);
-        console.log(`Game created (${playerOne.username} vs ${playerTwo.username}).`);
-
-        playerOne.socket.emit('GameStartedMessage', {
-            side: 0,
-            opponent: playerTwo.id
-        });
-
-        playerTwo.socket.emit('GameStartedMessage', {
-            side: 1,
-            opponent: playerOne.id
-        });
+        game.start();
+        console.log(`Game started (${playerOne.username} vs ${playerTwo.username}).`);
     }
 
     private static onConnection(socket: SocketIO.Socket) {

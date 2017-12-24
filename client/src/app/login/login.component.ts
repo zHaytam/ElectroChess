@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SocketService } from '../services/socket.service';
 import { Router } from '@angular/router';
+import Player from '../services/player';
 
 @Component({
     selector: 'app-login',
@@ -53,7 +54,7 @@ export class LoginComponent {
     }
 
     private onLoginRequestAcceptedMessage(data) {
-        this.socketService.username = data.username;
+        this.socketService.player = new Player(data.id, data.name);
         this.alert.content = 'Successfully connected.';
         this.alert.type = 'success';
         this.alert.visible = true;

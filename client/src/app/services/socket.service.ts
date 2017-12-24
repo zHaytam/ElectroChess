@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as socketIo from 'socket.io-client';
+import Player from './player';
 
 const SERVER_URL = 'http://localhost:1997';
 
@@ -8,9 +9,9 @@ export class SocketService {
 
     private socket: SocketIOClient.Socket;
     public connected: boolean;
-    public username: string;
+    public player: Player;
     public get loggedIn(): boolean {
-        return this.username !== undefined;
+        return this.player !== undefined;
     }
 
     constructor() {

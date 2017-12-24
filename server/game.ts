@@ -1,4 +1,5 @@
 import Player from "./player";
+import { Sides } from './consts';
 
 export default class Game {
 
@@ -12,7 +13,21 @@ export default class Game {
     constructor(playerBlack: Player, playerWhite: Player) {
         this.playerBlack = playerBlack;
         this.playerWhite = playerWhite;
+        this.playerBlack.startGame(this, Sides.BLACK);
+        this.playerWhite.startGame(this, Sides.WHITE);
         this.currentlyPlaying = 0;
+    }
+
+    public start() {
+        this.playerBlack.socket.emit('GameStartedMessage', {
+            side: Sides.BLACK,
+            opponent: this.playerWhite.id
+        });
+
+        this.playerWhite.socket.emit('GameStartedMessage', {
+            side: Sides.WHITE,
+            opponent: this.playerBlack.id
+        });
     }
 
 }

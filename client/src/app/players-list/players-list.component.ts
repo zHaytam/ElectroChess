@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SocketService } from '../services/socket.service';
 import { GameService } from '../services/game.service';
 import { Router } from '@angular/router';
+import Player from '../services/player';
 
 @Component({
     selector: 'app-players-list',
@@ -11,27 +12,26 @@ import { Router } from '@angular/router';
 
 export class PlayersListComponent {
 
-    public playersList: any[];
+    public playersList: Player[];
     public inviting: boolean;
-    public alert: any;
+    public alerts: any[];
+    public inviters: Player[];
 
     constructor(public socketService: SocketService, private gameService: GameService, private router: Router) {
         this.inviting = false;
-        this.alert = {
-            type: undefined,
-            content: undefined,
-            visible: false
-        };
+        this.alerts = [];
+        this.inviters = [];
         this.socketService.on('PlayersListMessage', this.onPlayersListMessage.bind(this));
         this.socketService.on('PlayerLeftMessage', this.onPlayerLeftMessage.bind(this));
         this.socketService.on('PlayerJoinedMessage', this.onPlayerJoinedMessage.bind(this));
         this.socketService.on('InviteRequestDeniedMessage', this.onInviteRequestDeniedMessage.bind(this));
         this.socketService.on('InviteRequestMessage', this.onInviteRequestMessage.bind(this));
+        this.socketService.on('InviteDeclinedMessage', this.onInviteDeclinedMessage.bind(this));
         this.socketService.on('GameStartedMessage', this.onGameStartedMessage.bind(this));
         this.socketService.send('PlayersListRequestMessage', {});
     }
 
-    private invitePlayer(e, player) {
+    private invitePlayer(e, player: Player) {
         e.preventDefault();
 
         if (this.gameService.playing || this.inviting) {
@@ -43,8 +43,25 @@ export class PlayersListComponent {
         }
     }
 
+    private declineInvite(inviter: Player) {
+        inviter = this.getPlayer(inviter.id);
+        if (inviter && this.socketService.send('DeclineInviteMessage', { inviterId: inviter.id })) {
+            this.inviters.splice(this.inviters.findIndex((e) => e.id === inviter.id));
+        }
+    }
+
+    private acceptInvite(inviter: Player) {
+        inviter = this.getPlayer(inviter.id);
+        if (inviter) {
+            this.socketService.send('AcceptInviteMessage', { inviter: inviter.id });
+        }
+    }
+
     private onPlayersListMessage(data) {
-        this.playersList = data;
+        this.playersList = [];
+        for (const p of data) {
+            this.playersList.push(new Player(p.id, p.name));
+        }
     }
 
     private onPlayerLeftMessage(data) {
@@ -57,53 +74,58 @@ export class PlayersListComponent {
 
     private onPlayerJoinedMessage(data) {
         if (data.id !== undefined && data.name) {
-            this.playersList.push(data);
+            this.playersList.push(new Player(data.id, data.name));
         }
     }
 
     private onInviteRequestDeniedMessage(data) {
+        let msg = '';
         switch (data.reason) {
             case 0:
-                this.alert.content = 'Player not found or is not logged in.';
+                msg = 'Player not found or is not logged in.';
                 break;
             case 1:
-                this.alert.content = 'Player is already playing a game.';
+                msg = 'Player is already playing a game.';
                 break;
         }
 
-        this.alert.type = 'danger';
-        this.alert.visible = true;
-        this.inviting = false;
+        this.alerts.push({
+            content: msg,
+            type: 'danger'
+        });
 
-        setTimeout(() => {
-            this.alert.visible = false;
-        }, 3000);
+        this.inviting = false;
     }
 
     private onInviteRequestMessage(data) {
-        const opponent = this.getPlayer(data.id);
-        if (opponent) {
-            this.alert.content = `${opponent.name} invited you to play!`;
-            this.alert.type = 'info';
-            this.alert.invite = true;
-            this.alert.visible = true;
+        const opponent = this.getPlayer(data.inviterId);
+        if (!opponent) {
+            return;
         }
+
+        this.inviters.push(opponent);
+    }
+
+    private onInviteDeclinedMessage(data) {
+        this.alerts.push({
+            content: `${data.from} declined your invite.`,
+            type: 'danger'
+        });
+
+        this.inviting = false;
     }
 
     private onGameStartedMessage(data) {
-        // TODO: change
-        for (const player of this.playersList) {
-            if (player.id === data.opponent) {
-                data.opponent = player;
-                break;
-            }
+        const opponent = this.getPlayer(data.opponent);
+        if (!opponent) {
+            return;
         }
 
-        this.gameService.startGame(data);
+        this.gameService.startGame(data.side, opponent);
         this.router.navigateByUrl('game');
     }
 
-    private getPlayer(id: number): any {
+    private getPlayer(id: number): Player {
         for (const player of this.playersList) {
             if (player.id === id) {
                 return player;

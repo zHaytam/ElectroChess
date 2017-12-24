@@ -1,4 +1,5 @@
 import Game from './game';
+import { Sides } from './consts';
 
 export default class Player {
 
@@ -6,6 +7,7 @@ export default class Player {
     public socket: SocketIO.Socket;
     public username: string;
     public game: Game;
+    public side: Sides;
     public get loggedIn(): boolean {
         return this.username !== undefined;
     }
@@ -16,6 +18,11 @@ export default class Player {
     constructor(id: number, socket: SocketIO.Socket) {
         this.id = id;
         this.socket = socket;
+    }
+
+    public startGame(game: Game, side: Sides) {
+        this.game = game;
+        this.side = side;
     }
 
 }
