@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SocketService } from './services/socket.service';
-import { GameService } from './services/game.service';
+import { GameService } from './services/game/game.service';
 import { PlayersListComponent } from './players-list/players-list.component';
 import { GameComponent } from './game/game.component';
 

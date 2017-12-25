@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SocketService } from '../services/socket.service';
-import { GameService } from '../services/game.service';
+import { GameService } from '../services/game/game.service';
 import { Router } from '@angular/router';
 import Player from '../services/player';
 
@@ -121,7 +121,7 @@ export class PlayersListComponent {
             return;
         }
 
-        this.gameService.startGame(data.side, opponent);
+        this.gameService.startGame(data.side, opponent, data.grid);
         this.router.navigateByUrl('game');
     }
 

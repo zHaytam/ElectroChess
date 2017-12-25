@@ -1,4 +1,4 @@
-import Game from './game';
+import Game from './game/game';
 import { Sides } from './consts';
 
 export default class Player {

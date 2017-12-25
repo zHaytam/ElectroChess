@@ -1,0 +1,27 @@
+#game-wrapper {
+  width: 1020px;
+  display: flex;
+  margin: 3rem auto 3rem auto;
+}
+
+.side-menu {
+  width: 235px;
+  height: 600px;
+}
+
+#board {
+  width: 530px;
+  height: 530px;
+  background-color: #ffce9e;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.piece {
+  width: 64px;
+  height: 64px;
+}
+
+.dark-gold {
+  background-color: #d18b47;
+}

@@ -1,3 +1,64 @@
-<p>
-  game works!
-</p>
+<div id="logged-as">
+  Logged in as
+  <b>{{ socketService.player.name }}</b>
+</div>
+<div id="game-wrapper" class="mx-auto">
+  <!-- Left side menu -->
+  <div class="side-menu">
+    <!-- Currently playing -->
+    <div class="card mb-1">
+      <div class="card-header">
+        <h5 class="card-title mt-2">
+          <i class="fas fa-gamepad"></i>
+          Currently playing
+        </h5>
+      </div>
+      <div class="card-body">
+        <span>
+          <i [ngClass]="gameService.player.side === 1 ? 'far' : 'fas'" class="fa-circle"></i>
+          {{ gameService.player.name }}
+        </span>
+        <br>
+        <span>
+          <i [ngClass]="gameService.opponent.side === 1 ? 'far' : 'fas'" class="fa-circle"></i>
+          {{ gameService.opponent.name }}
+        </span>
+      </div>
+    </div>
+    <!-- Chat -->
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mt-2">
+          <i class="fas fa-comments"></i>
+          Chat
+        </h5>
+      </div>
+      <div class="card-body">
+      </div>
+    </div>
+  </div>
+  <!-- Board -->
+  <table id="board">
+    <tr *ngFor="let row of gameService.grid; index as i" class="text-center">
+      <td *ngFor="let piece of row; index as j" class="piece" [ngClass]="{ 'dark-gold': (i + j) % 2 !== 0 }">
+        {{ piece.type }}
+      </td>
+      <td class="bg-dark text-white">{{ 8 - i }}</td>
+    </tr>
+    <tr class="text-center bg-dark text-white">
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td></td>
+    </tr>
+  </table>
+  <!-- Right side menu -->
+  <div class="side-menu">
+
+  </div>
+</div>
