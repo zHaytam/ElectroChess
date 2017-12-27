@@ -40,16 +40,39 @@ export default class Game {
         for (let row = 0; row < 8; row++) {
             this.grid[row] = [];
             for (let col = 0; col < 8; col++) {
-                this.grid[row][col] = new Piece(Pieces.NONE, Sides.BLACK);
+                this.grid[row][col] = new Piece(Pieces.NONE, row >= 4 ? Sides.WHITE : Sides.BLACK);
             }
         }
 
+        // Pawns
         for (let col = 0; col < 8; col++) {
             this.grid[1][col].type = Pieces.PAWN;
-            this.grid[1][col].side = Sides.BLACK;
             this.grid[6][col].type = Pieces.PAWN;
-            this.grid[6][col].side = Sides.WHITE;
         }
+
+        // Rooks
+        this.grid[0][0].type = Pieces.ROOK;
+        this.grid[0][7].type = Pieces.ROOK;
+        this.grid[7][0].type = Pieces.ROOK;
+        this.grid[7][7].type = Pieces.ROOK;
+
+        // Knights
+        this.grid[0][1].type = Pieces.KNIGHT;
+        this.grid[0][6].type = Pieces.KNIGHT;
+        this.grid[7][1].type = Pieces.KNIGHT;
+        this.grid[7][6].type = Pieces.KNIGHT;
+
+        // Bishops
+        this.grid[0][2].type = Pieces.BISHOP;
+        this.grid[0][5].type = Pieces.BISHOP;
+        this.grid[7][2].type = Pieces.BISHOP;
+        this.grid[7][5].type = Pieces.BISHOP;
+
+        // Queen & King
+        this.grid[0][3].type = Pieces.QUEEN;
+        this.grid[0][4].type = Pieces.KING;
+        this.grid[7][3].type = Pieces.QUEEN;
+        this.grid[7][4].type = Pieces.KING;
     }
 
 }

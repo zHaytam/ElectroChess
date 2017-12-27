@@ -40,9 +40,7 @@
   <!-- Board -->
   <table id="board">
     <tr *ngFor="let row of gameService.grid; index as i" class="text-center">
-      <td *ngFor="let piece of row; index as j" class="piece" [ngClass]="{ 'dark-gold': (i + j) % 2 !== 0 }">
-        {{ piece.type }}
-      </td>
+      <td *ngFor="let piece of row; index as j" class="piece" [ngClass]="getPieceClass(piece)"></td>
       <td class="bg-dark text-white">{{ 8 - i }}</td>
     </tr>
     <tr class="text-center bg-dark text-white">

@@ -3,7 +3,7 @@ import { SocketService } from '../services/socket.service';
 import { GameService } from '../services/game/game.service';
 import { Router } from '@angular/router';
 import Piece from '../services/game/piece';
-import { Sides } from '../consts';
+import { Pieces, Sides } from '../consts';
 
 @Component({
     selector: 'app-game',
@@ -16,8 +16,14 @@ export class GameComponent {
     constructor(public socketService: SocketService, public gameService: GameService, private router: Router) {
     }
 
-    private getColor(piece: Piece) {
-        return piece.side === Sides.BLACK ? 'black' : 'white';
+    private getPieceClass(piece: Piece) {
+        if (piece.type === Pieces.NONE) {
+            return '';
+        }
+
+        const type = Pieces[piece.type].toLowerCase();
+        const color = Sides[piece.side].toLowerCase();
+        return `${type}-${color}`;
     }
 
 }
