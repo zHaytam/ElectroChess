@@ -6,12 +6,11 @@
 
 .side-menu {
   width: 235px;
-  height: 600px;
+  height: 538px;
 }
 
 #board {
   width: 530px;
-  height: 530px;
   background-color: #ffce9e;
   margin-left: 10px;
   margin-right: 10px;
