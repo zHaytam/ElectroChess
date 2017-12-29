@@ -38,10 +38,11 @@
     </div>
   </div>
   <!-- Board -->
-  <div id="board">
-    <div *ngFor="let piece of gameService.board.pieces">
-      {{ piece.row }} + ' ' + {{ piece.col }}
-    </div>
+  <div id="board" (click)="onBoardClick($event)">
+    <div *ngFor="let possibleDestination of possibleDestinations" class="possible-destination" [style.left.px]="possibleDestination.col * 64"
+      [style.top.px]="possibleDestination.row * 64"></div>
+    <div *ngFor="let piece of gameService.board.pieces" class="piece" [ngClass]="getPieceClass(piece)" [style.left.px]="piece.col * 64"
+      [style.top.px]="piece.row * 64"></div>
   </div>
   <!-- Right side menu -->
   <div class="side-menu">

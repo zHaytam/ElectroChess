@@ -9,10 +9,20 @@ export default class Bishop extends Piece {
         super(side, row, col);
     }
 
-    public getPossibleDestinations(board: Board): Piece[] {
+    public getPossibleDestinations(board: Board): any[] {
         const possibleDestinations = [];
 
+        // top-left
+        this.getPossibleDestinationsDiagonally(board, -1, -1, possibleDestinations);
 
+        // top-right
+        this.getPossibleDestinationsDiagonally(board, -1, 1, possibleDestinations);
+
+        // bottom-left
+        this.getPossibleDestinationsDiagonally(board, 1, -1, possibleDestinations);
+
+        // bottom-right
+        this.getPossibleDestinationsDiagonally(board, 1, 1, possibleDestinations);
 
         return possibleDestinations;
     }

@@ -14,11 +14,13 @@
   background-image: url('../../assets/images/Chess_Board.png');
   margin-left: 10px;
   margin-right: 10px;
+  position: relative;
 }
 
 .piece {
   width: 64px;
   height: 64px;
+  position: absolute;
 }
 
 .piece:hover {
@@ -30,6 +32,9 @@
 }
 
 .possible-destination {
+  width: 64px;
+  height: 64px;
+  position: absolute;
   box-shadow: inset 0px 0px 4px 4px #8db9e2;
 }
 

@@ -30,12 +30,4 @@ export class GameService {
         this.playing = true;
     }
 
-    public getPossibleDestinations(piece: Piece): Piece[] {
-        const possibleDestinations = [];
-
-
-
-        return possibleDestinations;
-    }
-
 }

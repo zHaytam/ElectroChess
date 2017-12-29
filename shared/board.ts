@@ -52,7 +52,7 @@ export default class Board {
 
     public getPiece(row: number, col: number): Piece {
         for (const piece of this.pieces) {
-            if (piece.row === row || piece.col === col) {
+            if (piece.row === row && piece.col === col) {
                 return piece;
             }
         }
@@ -62,6 +62,19 @@ export default class Board {
 
     public hasPiece(row: number, col: number): boolean {
         return this.getPiece(row, col) !== undefined;
+    }
+
+    public hasPieceOfSide(row: number, col: number, side: Sides): boolean {
+        const piece = this.getPiece(row, col);
+        if (piece && piece.side === side) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public isValidPosition(row: number, col: number): boolean {
+        return row >= 0 && row < 8 && col >= 0 && col < 8;
     }
 
 }

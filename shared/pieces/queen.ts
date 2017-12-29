@@ -9,10 +9,22 @@ export default class Queen extends Piece {
         super(side, row, col);
     }
 
-    public getPossibleDestinations(board: Board): Piece[] {
+    public getPossibleDestinations(board: Board): any[] {
         const possibleDestinations = [];
 
+        // horizontal
+        this.getPossibleDestinationsHorizontally(board, -1, possibleDestinations);
+        this.getPossibleDestinationsHorizontally(board, 1, possibleDestinations);
 
+        // vertical
+        this.getPossibleDestinationsVertically(board, -1, possibleDestinations);
+        this.getPossibleDestinationsVertically(board, 1, possibleDestinations);
+
+        // diagonal
+        this.getPossibleDestinationsDiagonally(board, -1, -1, possibleDestinations);
+        this.getPossibleDestinationsDiagonally(board, -1, 1, possibleDestinations);
+        this.getPossibleDestinationsDiagonally(board, 1, -1, possibleDestinations);
+        this.getPossibleDestinationsDiagonally(board, 1, 1, possibleDestinations);
 
         return possibleDestinations;
     }
