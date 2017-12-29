@@ -121,7 +121,7 @@ export class PlayersListComponent {
             return;
         }
 
-        this.gameService.startGame(data.side, opponent, data.grid);
+        this.gameService.startGame(data.side, opponent);
         this.router.navigateByUrl('game');
     }
 

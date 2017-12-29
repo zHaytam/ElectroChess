@@ -1,4 +1,4 @@
-import { Sides } from '../consts';
+import { Sides } from '../../../../shared/consts';
 export default class Player {
 
     public id: number;

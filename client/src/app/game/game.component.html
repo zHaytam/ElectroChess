@@ -38,23 +38,11 @@
     </div>
   </div>
   <!-- Board -->
-  <table id="board">
-    <tr *ngFor="let row of gameService.grid; index as i" class="text-center">
-      <td *ngFor="let piece of row; index as j" class="piece" [ngClass]="getPieceClass(piece)"></td>
-      <td class="bg-dark text-white">{{ 8 - i }}</td>
-    </tr>
-    <tr class="text-center bg-dark text-white">
-      <td>A</td>
-      <td>B</td>
-      <td>C</td>
-      <td>D</td>
-      <td>E</td>
-      <td>F</td>
-      <td>G</td>
-      <td>H</td>
-      <td></td>
-    </tr>
-  </table>
+  <div id="board">
+    <div *ngFor="let piece of gameService.board.pieces">
+      {{ piece.row }} + ' ' + {{ piece.col }}
+    </div>
+  </div>
   <!-- Right side menu -->
   <div class="side-menu">
     <!-- Moves -->

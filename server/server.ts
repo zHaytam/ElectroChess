@@ -1,7 +1,7 @@
 import * as socketIo from 'socket.io';
 import Player from './player';
 import FramesManager from './frames/FramesManager';
-import Game from './game/game';
+import Game from './game';
 
 const PORT = 1997;
 

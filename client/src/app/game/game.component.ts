@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SocketService } from '../services/socket.service';
 import { GameService } from '../services/game/game.service';
 import { Router } from '@angular/router';
-import Piece from '../services/game/piece';
-import { Pieces, Sides } from '../consts';
+import { Sides } from '../../../../shared/consts';
+import Piece from '../../../../shared/pieces/piece';
 
 @Component({
     selector: 'app-game',
@@ -13,17 +13,25 @@ import { Pieces, Sides } from '../consts';
 
 export class GameComponent {
 
+    public selectedPiece: Piece;
+    public possibleDestinations: Piece[];
+
     constructor(public socketService: SocketService, public gameService: GameService, private router: Router) {
+        this.possibleDestinations = [];
     }
 
-    private getPieceClass(piece: Piece) {
-        if (piece.type === Pieces.NONE) {
-            return '';
+    private onPieceClick(piece: Piece) {
+        // If there is no selected piece, select this one
+        if (this.selectedPiece === undefined) {
+            this.selectedPiece = piece;
+            this.possibleDestinations = this.gameService.getPossibleDestinations(piece);
         }
 
-        const type = Pieces[piece.type].toLowerCase();
-        const color = Sides[piece.side].toLowerCase();
-        return `${type}-${color}`;
+        // If there is a selected piece and the clicked piece is not among the possible destinations, reset everything
+        if (this.selectedPiece && !this.possibleDestinations.includes(piece)) {
+            this.selectedPiece = undefined;
+            this.possibleDestinations = [];
+        }
     }
 
 }

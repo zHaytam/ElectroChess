@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { SocketService } from '../socket.service';
 import Player from '../player';
-import { Sides } from '../../consts';
-import Piece from './piece';
+import { Sides } from '../../../../../shared/consts';
+import Board from '../../../../../shared/board';
+import Piece from '../../../../../shared/pieces/piece';
 
 
 @Injectable()
 export class GameService {
 
     public playing: boolean;
-    public grid: Piece[][];
+    public board: Board;
     public side: Sides;
     public opponent: Player;
     public get player(): Player {
@@ -20,12 +21,21 @@ export class GameService {
         this.playing = false;
     }
 
-    public startGame(side: Sides, opponent: Player, grid: Piece[][]) {
-        this.grid = grid;
-        this.socketService.player.side = side;
+    public startGame(side: Sides, opponent: Player) {
+        this.board = new Board();
+        console.log(this.board);
+        this.player.side = side;
         this.opponent = opponent;
         this.opponent.side = side === Sides.BLACK ? Sides.WHITE : Sides.BLACK;
         this.playing = true;
+    }
+
+    public getPossibleDestinations(piece: Piece): Piece[] {
+        const possibleDestinations = [];
+
+
+
+        return possibleDestinations;
     }
 
 }

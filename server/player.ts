@@ -1,5 +1,5 @@
-import Game from './game/game';
-import { Sides } from './consts';
+import Game from './game';
+import { Sides } from '../shared/consts';
 
 export default class Player {
 
