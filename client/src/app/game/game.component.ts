@@ -50,14 +50,22 @@ export class GameComponent {
             // If the clicked tile is one of the player's pieces, select it directly
             if (!this.trySelectPiece(row, col)) {
                 // Otherwise reset selection
-                this.selectedPiece = undefined;
-                this.possibleDestinations = [];
+                this.resetSelection();
             }
         }
         // If there is a selected piece and the clicked tile is among the possible destinations
-        else {
-
+        else if (this.gameService.myTurn) {
+            this.socketService.send('MovePieceMessage', {
+                from: { row: this.selectedPiece.row, col: this.selectedPiece.col },
+                to: { row: row, col: col }
+            });
+            this.resetSelection();
         }
+    }
+
+    private resetSelection() {
+        this.selectedPiece = undefined;
+        this.possibleDestinations = [];
     }
 
     private trySelectPiece(row: number, col: number): boolean {

@@ -2,6 +2,7 @@ import LoginFrame from './LoginFrame';
 import Frame from './Frame';
 import Player from '../player';
 import PlayersFrame from './PlayersFrame'
+import GameFrame from './GameFrame';
 
 export default class FramesManager {
 
@@ -11,6 +12,7 @@ export default class FramesManager {
         FramesManager.frames = [];
         FramesManager.frames.push(new LoginFrame());
         FramesManager.frames.push(new PlayersFrame());
+        FramesManager.frames.push(new GameFrame());
         console.log(`${FramesManager.frames.length} frame(s) initialized.`);
     }
 

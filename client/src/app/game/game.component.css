@@ -6,7 +6,7 @@
 
 .side-menu {
   width: 235px;
-  height: 538px;
+  height: 512px;
 }
 
 #board {
@@ -35,6 +35,7 @@
   width: 64px;
   height: 64px;
   position: absolute;
+  cursor: pointer;
   box-shadow: inset 0px 0px 4px 4px #8db9e2;
 }
 

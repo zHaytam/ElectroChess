@@ -77,4 +77,36 @@ export default class Board {
         return row >= 0 && row < 8 && col >= 0 && col < 8;
     }
 
+    public movePiece(data: any, playingSide: Sides): boolean {
+        if (!data.from || !data.to) {
+            return false;
+        }
+
+        const fromPiece = this.getPiece(data.from.row, data.from.col);
+        if (!fromPiece) {
+            return false;
+        }
+
+        const possibleDestinations = fromPiece.getPossibleDestinations(this);
+        for (const possibleDestination of possibleDestinations) {
+            if (possibleDestination.row === data.to.row && possibleDestination.col === data.to.col) {
+                const toPiece = this.getPiece(possibleDestination.row, possibleDestination.col);
+                if (toPiece && toPiece.side === playingSide) {
+                    return;
+                }
+
+                // if there is an opponent's piece
+                if (toPiece && toPiece.side !== playingSide) {
+                    this.pieces.splice(this.pieces.indexOf(toPiece), 1);
+                }
+
+                fromPiece.row = possibleDestination.row;
+                fromPiece.col = possibleDestination.col;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

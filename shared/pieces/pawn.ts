@@ -27,15 +27,23 @@ export default class Pawn extends Piece {
                     }
                 }
             }
-            // if there is an opponent's piece
-            else if (piece.side !== this.side) {
-                possibleDestinations.push({ row: nRow, col: this.col });
-            }
         }
 
-        // eating movements TODO
+        // eating movements TODO (col -1 or +1)
+        nRow = this.row + (this.side === Sides.BLACK ? 1 : -1);
+        this.getEatingPosition(board, nRow, -1, possibleDestinations);
+        this.getEatingPosition(board, nRow, 1, possibleDestinations);
 
         return possibleDestinations;
+    }
+
+    private getEatingPosition(board: Board, nRow: number, j: number, possibleDestinations: any[]) {
+        if (board.isValidPosition(nRow, this.col + j)) {
+            const piece = board.getPiece(nRow, this.col + j);
+            if (piece && piece.side !== this.side) {
+                possibleDestinations.push({ row: nRow, col: this.col + j });
+            }
+        }
     }
 
 }
