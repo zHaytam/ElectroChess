@@ -1,7 +1,7 @@
 # ElectroChess
 
 An online multiplayer chess game made with Electron, Angular and Bootstrap.<br />
-The main purpose was to learn how to create an Electron app using Angular (while learning it).
+The main purpose was to create an Electron app using Angular (while learning it).
 
 ### This project was created with:
 * [Angular CLI](https://github.com/angular/angular-cli)
