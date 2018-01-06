@@ -4,6 +4,7 @@ import Player from '../player';
 import { Sides } from '../../../../../shared/consts';
 import Board from '../../../../../shared/board';
 import Piece from '../../../../../shared/pieces/piece';
+import Move from './move';
 
 
 @Injectable()
@@ -14,6 +15,7 @@ export class GameService {
     public side: Sides;
     public opponent: Player;
     public myTurn: boolean;
+    public moves: Move[];
     public get player(): Player {
         return this.socketService.player;
     }
@@ -24,6 +26,7 @@ export class GameService {
     constructor(private socketService: SocketService) {
         this.playing = false;
         this.myTurn = false;
+        this.moves = [];
         this.socketService.on('GameTurnMessage', this.onGameTurnMessage.bind(this));
         this.socketService.on('PieceMovedMessage', this.onPieceMovedMessage.bind(this));
     }
@@ -41,7 +44,16 @@ export class GameService {
     }
 
     private onPieceMovedMessage(data: any) {
-        this.board.movePiece(data, this.currentlyPlaying.side);
+        console.log(data);
+        if (this.board.movePiece(data, this.currentlyPlaying.side)) {
+            // this is poor, but will always work for us since black always starts
+            if (this.currentlyPlaying.side === Sides.BLACK) {
+                this.moves.push(new Move(data));
+            }
+            else {
+                this.moves[this.moves.length - 1].white = data;
+            }
+        }
     }
 
 }

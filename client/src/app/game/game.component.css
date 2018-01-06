@@ -11,6 +11,7 @@
 
 #board {
   width: 530px;
+  height: 530px;
   background-image: url('../../assets/images/Chess_Board.png');
   margin-left: 10px;
   margin-right: 10px;
@@ -37,6 +38,11 @@
   position: absolute;
   cursor: pointer;
   box-shadow: inset 0px 0px 4px 4px #8db9e2;
+}
+
+#moves {
+  height: 234px;
+  overflow: auto;
 }
 
 .king-black {
