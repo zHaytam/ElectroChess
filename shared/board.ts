@@ -1,4 +1,4 @@
-import Piece from "./pieces/piece";
+import Piece from './pieces/piece';
 import Pawn from './pieces/pawn';
 import { Sides } from './consts';
 import Rook from './pieces/rook';
@@ -14,40 +14,6 @@ export default class Board {
     constructor() {
         this.pieces = [];
         this.initializePieces();
-    }
-
-    private initializePieces() {
-        // Blacks are at the top, Whites are on the bottom
-
-        // PAWNS
-        for (let col = 0; col < 8; col++) {
-            this.pieces.push(new Pawn(Sides.BLACK, 1, col));
-            this.pieces.push(new Pawn(Sides.WHITE, 6, col));
-        }
-
-        // ROOKS
-        this.pieces.push(new Rook(Sides.BLACK, 0, 0));
-        this.pieces.push(new Rook(Sides.BLACK, 0, 7));
-        this.pieces.push(new Rook(Sides.WHITE, 7, 0));
-        this.pieces.push(new Rook(Sides.WHITE, 7, 7));
-
-        // KNIGHTS
-        this.pieces.push(new Knight(Sides.BLACK, 0, 1));
-        this.pieces.push(new Knight(Sides.BLACK, 0, 6));
-        this.pieces.push(new Knight(Sides.WHITE, 7, 1));
-        this.pieces.push(new Knight(Sides.WHITE, 7, 6));
-
-        // BISHOPS
-        this.pieces.push(new Bishop(Sides.BLACK, 0, 2));
-        this.pieces.push(new Bishop(Sides.BLACK, 0, 5));
-        this.pieces.push(new Bishop(Sides.WHITE, 7, 2));
-        this.pieces.push(new Bishop(Sides.WHITE, 7, 5));
-
-        // QUEENS AND KINGS
-        this.pieces.push(new Queen(Sides.BLACK, 0, 3));
-        this.pieces.push(new King(Sides.BLACK, 0, 4));
-        this.pieces.push(new Queen(Sides.WHITE, 7, 3));
-        this.pieces.push(new King(Sides.WHITE, 7, 4));
     }
 
     public getPiece(row: number, col: number): Piece {
@@ -107,6 +73,87 @@ export default class Board {
         }
 
         return false;
+    }
+
+    public canBeEaten(piece: Piece) {
+        for (const bPiece of this.pieces) {
+            if (bPiece.side === piece.side || bPiece === piece) {
+                continue;
+            }
+
+            for (const possibleDestination of bPiece.getPossibleDestinations(this)) {
+                if (possibleDestination.row === piece.row && possibleDestination.col === piece.col) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public promotePawn(row: number, col: number, to: number): boolean {
+        if (to < 0 || to > 3) {
+            return false;
+        }
+
+        const pawnToPromote = this.getPiece(row, col);
+        if (!pawnToPromote) {
+            return false;
+        }
+
+        let newPiece;
+        switch (to) {
+            case 0:
+                newPiece = new Knight(pawnToPromote.side, pawnToPromote.row, pawnToPromote.col);
+                break;
+            case 1:
+                newPiece = new Bishop(pawnToPromote.side, pawnToPromote.row, pawnToPromote.col);
+                break;
+            case 2:
+                newPiece = new Rook(pawnToPromote.side, pawnToPromote.row, pawnToPromote.col);
+                break;
+            case 3:
+                newPiece = new Queen(pawnToPromote.side, pawnToPromote.row, pawnToPromote.col);
+                break;
+        }
+
+        this.pieces.splice(this.pieces.indexOf(pawnToPromote), 1);
+        this.pieces.push(newPiece);
+        return true;
+    }
+
+    private initializePieces() {
+        // Blacks are at the top, Whites are on the bottom
+
+        // PAWNS
+        for (let col = 0; col < 8; col++) {
+            this.pieces.push(new Pawn(Sides.BLACK, 1, col));
+            this.pieces.push(new Pawn(Sides.WHITE, 6, col));
+        }
+
+        // ROOKS
+        this.pieces.push(new Rook(Sides.BLACK, 0, 0));
+        this.pieces.push(new Rook(Sides.BLACK, 0, 7));
+        this.pieces.push(new Rook(Sides.WHITE, 7, 0));
+        this.pieces.push(new Rook(Sides.WHITE, 7, 7));
+
+        // KNIGHTS
+        this.pieces.push(new Knight(Sides.BLACK, 0, 1));
+        this.pieces.push(new Knight(Sides.BLACK, 0, 6));
+        this.pieces.push(new Knight(Sides.WHITE, 7, 1));
+        this.pieces.push(new Knight(Sides.WHITE, 7, 6));
+
+        // BISHOPS
+        this.pieces.push(new Bishop(Sides.BLACK, 0, 2));
+        this.pieces.push(new Bishop(Sides.BLACK, 0, 5));
+        this.pieces.push(new Bishop(Sides.WHITE, 7, 2));
+        this.pieces.push(new Bishop(Sides.WHITE, 7, 5));
+
+        // QUEENS AND KINGS
+        this.pieces.push(new Queen(Sides.BLACK, 0, 3));
+        this.pieces.push(new King(Sides.BLACK, 0, 4));
+        this.pieces.push(new Queen(Sides.WHITE, 7, 3));
+        this.pieces.push(new King(Sides.WHITE, 7, 4));
     }
 
 }

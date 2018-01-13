@@ -19,7 +19,7 @@ export class GameService {
     public get player(): Player {
         return this.socketService.player;
     }
-    private get currentlyPlaying(): Player {
+    private get currentPlayer(): Player {
         return this.myTurn ? this.player : this.opponent;
     }
 
@@ -29,6 +29,7 @@ export class GameService {
         this.moves = [];
         this.socketService.on('GameTurnMessage', this.onGameTurnMessage.bind(this));
         this.socketService.on('PieceMovedMessage', this.onPieceMovedMessage.bind(this));
+        this.socketService.on('PawnPromotedMessage', this.onPawnPromotedMessage.bind(this));
     }
 
     public startGame(side: Sides, opponent: Player) {
@@ -44,16 +45,19 @@ export class GameService {
     }
 
     private onPieceMovedMessage(data: any) {
-        console.log(data);
-        if (this.board.movePiece(data, this.currentlyPlaying.side)) {
+        if (this.board.movePiece(data, this.currentPlayer.side)) {
             // this is poor, but will always work for us since black always starts
-            if (this.currentlyPlaying.side === Sides.BLACK) {
+            if (this.currentPlayer.side === Sides.BLACK) {
                 this.moves.push(new Move(data));
             }
             else {
                 this.moves[this.moves.length - 1].white = data;
             }
         }
+    }
+
+    private onPawnPromotedMessage(data: any) {
+        this.board.promotePawn(data.row, data.col, data.to);
     }
 
 }

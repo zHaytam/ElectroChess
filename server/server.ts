@@ -68,6 +68,12 @@ export default class Server {
         console.log(`Game started (${playerOne.username} vs ${playerTwo.username}).`);
     }
 
+    public static endGame(game: Game, winner: number) {
+        game.sendToBothPlayers('GameEndMessage', { winner: 1 });
+        console.log(`Game ended (${game.playerBlack.username} vs ${game.playerWhite.username}).`);
+        this.games.splice(this.games.indexOf(game), 1);
+    }
+
     private static onConnection(socket: SocketIO.Socket) {
         let newPlayer = new Player(Server.idsCounter, socket);
         FramesManager.handlePlayer(newPlayer);

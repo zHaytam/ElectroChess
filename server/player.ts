@@ -1,5 +1,6 @@
 import Game from './game';
 import { Sides } from '../shared/consts';
+import Piece from '../shared/pieces/piece';
 
 export default class Player {
 
@@ -8,6 +9,7 @@ export default class Player {
     public username: string;
     public game: Game;
     public side: Sides;
+    public pawnToPromote: Piece;
     public get loggedIn(): boolean {
         return this.username !== undefined;
     }

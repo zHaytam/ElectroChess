@@ -39,6 +39,21 @@
   </div>
   <!-- Board -->
   <div id="board" (click)="onBoardClick($event)">
+    <!-- Pawn promotion -->
+    <div class="promotion-popup" *ngIf="pawnToPromote" [ngStyle]="getPromotionPopupPosition()">
+      <div class="triangle-up" *ngIf="pawnToPromote && pawnToPromote.side === 1"></div>
+      <div [style.background-color]="'#8db9e2'">
+        <!-- Promote to knight -->
+        <a class="promotion-possibility" [ngClass]="getPromotionPossiblityClass(0)" (click)="promoteTo(0)"></a>
+        <!-- Promote to Bishop -->
+        <a class="promotion-possibility" [ngClass]="getPromotionPossiblityClass(1)" (click)="promoteTo(1)"></a>
+        <!-- Promote to Rook -->
+        <a class="promotion-possibility" [ngClass]="getPromotionPossiblityClass(2)" (click)="promoteTo(2)"></a>
+        <!-- Promote to Queen -->
+        <a class="promotion-possibility" [ngClass]="getPromotionPossiblityClass(3)" (click)="promoteTo(3)"></a>
+      </div>
+      <div class="triangle-down" *ngIf="pawnToPromote && pawnToPromote.side === 0"></div>
+    </div>
     <div *ngFor="let possibleDestination of possibleDestinations" class="possible-destination" [style.left.px]="possibleDestination.col * 64"
       [style.top.px]="possibleDestination.row * 64"></div>
     <div *ngFor="let piece of gameService.board.pieces" class="piece" [ngClass]="getPieceClass(piece)" [style.left.px]="piece.col * 64"

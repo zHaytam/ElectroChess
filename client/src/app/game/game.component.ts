@@ -4,6 +4,7 @@ import { GameService } from '../services/game/game.service';
 import { Router } from '@angular/router';
 import { Sides } from '../../../../shared/consts';
 import Piece from '../../../../shared/pieces/piece';
+import King from '../../../../shared/pieces/king';
 
 @Component({
     selector: 'app-game',
@@ -15,9 +16,11 @@ export class GameComponent {
 
     public selectedPiece: Piece;
     public possibleDestinations: any[];
+    public pawnToPromote: Piece;
 
     constructor(public socketService: SocketService, public gameService: GameService, private router: Router) {
         this.possibleDestinations = [];
+        this.socketService.on('PromotePawnMessage', this.onPromotePawnMessage.bind(this));
     }
 
     private getPieceClass(piece: Piece): string {
@@ -27,7 +30,44 @@ export class GameComponent {
             classes += ' selected';
         }
 
+        if (piece instanceof King && this.gameService.board.canBeEaten(piece)) {
+            classes += ' danger';
+        }
+
         return classes;
+    }
+
+    private getPromotionPossiblityClass(type: number): string {
+        const side = Sides[this.gameService.player.side].toLowerCase();
+        switch (type) {
+            case 0:
+                return 'knight-' + side;
+            case 1:
+                return 'bishop-' + side;
+            case 2:
+                return 'rook-' + side;
+            case 3:
+                return 'queen-' + side;
+        }
+    }
+
+    private getPromotionPopupPosition(): any {
+        if (!this.pawnToPromote) {
+            throw new Error('Invalid use.');
+        }
+
+        if (this.pawnToPromote.side === Sides.BLACK) {
+            return {
+                'top': ((3 * 64) - 14) + 'px',
+                'left': (this.pawnToPromote.col * 64) + 'px'
+            };
+        }
+        else {
+            return {
+                'top': 64 + 'px',
+                'left': (this.pawnToPromote.col * 64) + 'px'
+            };
+        }
     }
 
     private onBoardClick(event: MouseEvent) {
@@ -54,7 +94,7 @@ export class GameComponent {
             }
         }
         // If there is a selected piece and the clicked tile is among the possible destinations
-        else if (this.gameService.myTurn) {
+        else if (this.gameService.myTurn && !this.pawnToPromote) {
             this.socketService.send('MovePieceMessage', {
                 from: { row: this.selectedPiece.row, col: this.selectedPiece.col },
                 to: { row: row, col: col }
@@ -70,6 +110,10 @@ export class GameComponent {
 
     private trySelectPiece(row: number, col: number): boolean {
         const piece = this.gameService.board.getPiece(row, col);
+        if (this.selectedPiece === piece) {
+            return;
+        }
+
         if (piece && piece.side === this.gameService.player.side) {
             this.selectedPiece = piece;
             this.possibleDestinations = piece.getPossibleDestinations(this.gameService.board);
@@ -87,6 +131,20 @@ export class GameComponent {
         }
 
         return false;
+    }
+
+    private onPromotePawnMessage(data: any) {
+        this.pawnToPromote = this.gameService.board.getPiece(data.row, data.col);
+        if (this.pawnToPromote) {
+            console.log('Pawn promotion.', this.pawnToPromote);
+        }
+    }
+
+    private promoteTo(to: number) {
+        if (this.pawnToPromote) {
+            this.socketService.send('PromotePawnMessage', { to: to });
+            this.pawnToPromote = undefined;
+        }
     }
 
 }

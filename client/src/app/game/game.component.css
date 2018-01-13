@@ -1,7 +1,7 @@
 #game-wrapper {
   width: 1020px;
   display: flex;
-  margin: 3rem auto 3rem auto;
+  margin: 100px auto 0px auto;
 }
 
 .side-menu {
@@ -40,9 +40,47 @@
   box-shadow: inset 0px 0px 4px 4px #8db9e2;
 }
 
+.danger {
+  box-shadow: inset 0px 0px 4px 4px #ec4848 !important;
+}
+
 #moves {
   height: 234px;
   overflow: auto;
+}
+
+.promotion-popup {
+  position: absolute;
+  z-index: 10;
+}
+
+.promotion-possibility {
+  display: block;
+  width: 64px;
+  height: 64px;
+}
+
+.promotion-possibility:hover {
+  box-shadow: inset 0px 0px 4px 4px white;
+  cursor: pointer;
+}
+
+.triangle-down {
+  width: 0;
+  height: 0;
+  border-top: 14px solid #8db9e2;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  margin: 0 auto;
+}
+
+.triangle-up {
+  width: 0;
+  height: 0;
+  border-bottom: 14px solid #8db9e2;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  margin: 0 auto;
 }
 
 .king-black {
