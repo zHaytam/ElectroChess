@@ -69,7 +69,7 @@ export default class Server {
     }
 
     public static endGame(game: Game, winner: number) {
-        game.sendToBothPlayers('GameEndMessage', { winner: 1 });
+        game.sendToBothPlayers('GameEndMessage', { winner: winner });
         console.log(`Game ended (${game.playerBlack.username} vs ${game.playerWhite.username}).`);
         this.games.splice(this.games.indexOf(game), 1);
     }

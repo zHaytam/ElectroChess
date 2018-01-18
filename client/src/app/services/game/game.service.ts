@@ -16,6 +16,7 @@ export class GameService {
     public opponent: Player;
     public myTurn: boolean;
     public moves: Move[];
+    public winner: number;
     public get player(): Player {
         return this.socketService.player;
     }
@@ -27,9 +28,11 @@ export class GameService {
         this.playing = false;
         this.myTurn = false;
         this.moves = [];
+        this.winner = -1;
         this.socketService.on('GameTurnMessage', this.onGameTurnMessage.bind(this));
         this.socketService.on('PieceMovedMessage', this.onPieceMovedMessage.bind(this));
         this.socketService.on('PawnPromotedMessage', this.onPawnPromotedMessage.bind(this));
+        this.socketService.on('GameEndMessage', this.onGameEndMessage.bind(this));
     }
 
     public startGame(side: Sides, opponent: Player) {
@@ -38,6 +41,16 @@ export class GameService {
         this.opponent = opponent;
         this.opponent.side = side === Sides.BLACK ? Sides.WHITE : Sides.BLACK;
         this.playing = true;
+    }
+
+    public endGame() {
+        this.playing = false;
+        this.board = undefined;
+        this.side = undefined;
+        this.opponent = undefined;
+        this.myTurn = false;
+        this.moves.length = 0;
+        this.winner = -1;
     }
 
     private onGameTurnMessage(data: any) {
@@ -58,6 +71,10 @@ export class GameService {
 
     private onPawnPromotedMessage(data: any) {
         this.board.promotePawn(data.row, data.col, data.to);
+    }
+
+    private onGameEndMessage(data: any) {
+        this.winner = data.winner === undefined ? -1 : data.winner;
     }
 
 }

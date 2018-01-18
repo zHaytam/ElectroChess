@@ -2,6 +2,10 @@
   Logged in as
   <b>{{ socketService.player.name }}</b>
 </div>
+<div class="overlay text-center" *ngIf="gameService.winner !== -1">
+  <h1 class="text-white">{{ gameService.winner === gameService.player.id ? 'You won the game!' : 'You lost the game :(' }}</h1>
+  <button class="btn btn-outline-info" (click)="endGame()">Back to the players list</button>
+</div>
 <div id="game-wrapper" class="mx-auto">
   <!-- Left side menu -->
   <div class="side-menu">

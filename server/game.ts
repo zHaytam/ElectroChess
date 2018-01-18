@@ -51,7 +51,7 @@ export default class Game {
 
         if (this.board.movePiece(data, this.currentPlayer.side)) {
             // If the king was eaten, end the game
-            if (this.board.pieces.find(p => p.side !== this.currentPlayer.side && p instanceof King === undefined)) {
+            if (this.board.pieces.find(p => p.side !== this.currentPlayer.side && p instanceof King) === undefined) {
                 Server.endGame(this, this.currentPlayer.id);
             }
             else {

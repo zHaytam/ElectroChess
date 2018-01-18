@@ -147,4 +147,9 @@ export class GameComponent {
         }
     }
 
+    private endGame() {
+        this.gameService.endGame();
+        this.router.navigateByUrl('/players-list');
+    }
+
 }
