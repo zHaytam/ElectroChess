@@ -13,13 +13,13 @@ The main purpose was to create an Electron app using Angular (while learning it)
 
 ### Install & Test Run
 
-• server folder:
-  • `npm install`
-  • `npm run server`
-• client folder:
-  • `npm install`
-  • `npm run electron-build`
-  • `npm run electron` if you already built
+* server folder:
+  * `npm install`
+  * `npm run server`
+* client folder:
+  * `npm install`
+  * `npm run electron-build`
+  * `npm run electron` if you already built
 
 ### Screens
 
