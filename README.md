@@ -11,6 +11,16 @@ The main purpose was to create an Electron app using Angular (while learning it)
 ### Some of the libraries used:
 * [socket.io](https://github.com/socketio/socket.io/)
 
+### Install & Test Run
+
+• server folder:
+  • `npm install`
+  • `npm run server`
+• client folder:
+  • `npm install`
+  • `npm run electron-build`
+  • `npm run electron` if you already built
+
 ### Screens
 
 ![Login](https://i.imgur.com/NA72BFX.png)

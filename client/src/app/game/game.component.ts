@@ -70,7 +70,7 @@ export class GameComponent {
         }
     }
 
-    private onBoardClick(event: MouseEvent) {
+    onBoardClick(event: MouseEvent) {
         const parent: HTMLElement = event.srcElement.id === 'board' ? <HTMLElement>event.srcElement : event.srcElement.parentElement;
         const x = event.pageX - parent.offsetLeft;
         const y = event.pageY - parent.offsetTop;

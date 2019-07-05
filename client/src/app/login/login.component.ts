@@ -25,7 +25,7 @@ export class LoginComponent {
         this.socketService.on('LoginRequestAcceptedMessage', this.onLoginRequestAcceptedMessage.bind(this));
     }
 
-    private login(e) {
+    login(e) {
         e.preventDefault();
         const username = e.target.elements[0].value;
 
