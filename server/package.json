@@ -19,7 +19,7 @@
     "homepage": "https://github.com/zHaytam/ElectroChess#readme",
     "dependencies": {
         "@types/socket.io": "^1.4.31",
-        "socket.io": "^2.0.4",
+        "socket.io": "^2.5.0",
         "tslint": "^5.8.0",
         "typescript": "^1.8.10"
     }
